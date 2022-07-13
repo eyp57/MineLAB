@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import tr.web.minelab.minelab.commands.KrediCommand;
+import tr.web.minelab.minelab.commands.ShopCommand;
 import tr.web.minelab.minelab.commands.TopCommand;
 import tr.web.minelab.minelab.hooks.PlaceholderAPI;
 import tr.web.minelab.minelab.utils.DataSource;
@@ -97,6 +98,7 @@ public final class MineLAB extends JavaPlugin implements Listener {
     private void registerCommands() {
         HCore.registerCommands(new KrediCommand());
         HCore.registerCommands(new TopCommand());
+        HCore.registerCommands(new ShopCommand());
     }
 
     public static MineLAB getInstance() {

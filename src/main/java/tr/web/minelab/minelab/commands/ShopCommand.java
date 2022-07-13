@@ -5,9 +5,12 @@ import com.hakan.core.command.executors.base.BaseCommand;
 import com.hakan.core.command.executors.sub.SubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import tr.web.minelab.minelab.MineLAB;
+
+import java.util.Map;
 
 @BaseCommand(
         name = "market",
@@ -15,7 +18,9 @@ import tr.web.minelab.minelab.MineLAB;
 )
 public class ShopCommand implements HCommandAdapter {
     @SubCommand(
-            args = "al"
+            args = {
+                    "al"
+            }
     )
     public void alSubCommand(Player player, String[] args) {
         if(args.length == 2) {
@@ -36,6 +41,18 @@ public class ShopCommand implements HCommandAdapter {
             }
         } else {
             player.sendMessage("/market al (ürün id)");
+        }
+    }
+    @SubCommand(
+            args = {
+                    "urunler"
+            }
+    )
+    public void urunlerSubCommand(CommandSender sender, String args[]) {
+        for(Map.Entry<Integer, String> x : MineLAB.getDataSource().getShop().entrySet()) {
+            int id = x.getKey();
+            String product = x.getValue();
+            sender.sendMessage(ChatColor.GRAY + String.valueOf(id) + " - " + ChatColor.RED + product);
         }
     }
 }
