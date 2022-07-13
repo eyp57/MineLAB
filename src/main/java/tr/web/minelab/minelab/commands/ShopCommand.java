@@ -24,7 +24,7 @@ public class ShopCommand implements HCommandAdapter {
     )
     public void alSubCommand(Player player, String[] args) {
         if(args.length == 2) {
-            int id = Integer.parseInt(args[0]);
+            int id = Integer.parseInt(args[1]);
             int price = MineLAB.getDataSource().getProductPriceById(id);
             String[] commands = MineLAB.getDataSource().getProductCommandsById(id);
             if(commands == null || MineLAB.getDataSource().getShop().get(id) == null) {
