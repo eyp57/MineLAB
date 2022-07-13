@@ -1,0 +1,17 @@
+Database:
+  host: '127.0.0.1'
+  username: 'root'
+  database: 'minelab'
+  password: 'minelab123!'
+ShopSystem: true
+ServerId: 1 # Veritabanındaki sunucu idsi
+TopGui:
+  rows: 3
+  title: "&cEn çok Kredi yükleyenler"
+  item:
+    lore:
+      - ""
+      - "&7Oyuncu: &f%player%"
+      - "&7Kredi: &f%credit%"
+      - ""
+      - "&bEn çok &e%rank%. &bkredi yükleyen"

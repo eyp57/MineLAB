@@ -1,0 +1,9 @@
+name: MineLAB
+version: '${project.version}'
+main: tr.web.minelab.minelab.MineLAB
+api-version: 1.13
+depend: [ hCore ]
+softdepend: [ PlaceholderAPI ]
+authors: [ zRooter ]
+description: made by zRooter with love
+website: https://minelab.web.tr

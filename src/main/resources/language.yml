@@ -1,0 +1,7 @@
+noPerm: "&cBunun için yeterince yetkiniz bulunmuyor."
+noPlayerIsGiven: "&cLütfen oyuncuyu giriniz."
+creditGived: '&aBaşarıyla &e%player% &akişisine &e%amount% &akredi verildi.'
+creditRemoved: '&aBaşarıyla &e%player% &akişisinden &e%amount% &akredi silindi.'
+credits: '&e%player% &akişisinin &e%amount% &akredisi var.'
+noProductFound: '&e%id% &aID üzerinde hiç bir ürün bulunamadı'
+productBuySuccess: '&e%productId% (&e%product%) &aürününü başarıyla aldın.'
