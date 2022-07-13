@@ -156,15 +156,14 @@ public class DataSource {
             ex.printStackTrace();
         }
     }
-    public String[] getProductCommandsById(Integer id) {
+    public Array getProductCommandsById(Integer id) {
         if(shop.get(id) == null) return null;
         try {
             Statement statement = getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM `categoryProduct` WHERE `id` = " + id);
             if(resultSet.next()) {
                 Array commands = resultSet.getArray("productCommand");
-                String[] cmds = (String[]) commands.getArray();
-                return cmds;
+                return commands;
             }
         } catch(SQLException ex) {
             return null;

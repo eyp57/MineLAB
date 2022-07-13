@@ -10,6 +10,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import tr.web.minelab.minelab.MineLAB;
 
+import java.sql.Array;
+import java.sql.SQLException;
 import java.util.Map;
 
 @BaseCommand(
@@ -25,19 +27,27 @@ public class ShopCommand implements HCommandAdapter {
     public void alSubCommand(Player player, String[] args) {
         if(args.length == 2) {
             int id = Integer.parseInt(args[1]);
-            int price = MineLAB.getDataSource().getProductPriceById(id);
-            String[] commands = MineLAB.getDataSource().getProductCommandsById(id);
-            if(commands == null || MineLAB.getDataSource().getShop().get(id) == null) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("noProductFound").replaceAll("%id%", String.valueOf(id))));
-            }
-            MineLAB.getDataSource().updateCredit(player);
-            if(price >= Integer.parseInt(MineLAB.getDataSource().getCredit(player.getUniqueId()))) {
-                MineLAB.getDataSource().removeCredit(player, price);
-                for (String cmd : commands) {
-                    cmd = cmd.replaceAll("%player%", player.getName());
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+            try {
+                int price = MineLAB.getDataSource().getProductPriceById(id);
+                Array commands = MineLAB.getDataSource().getProductCommandsById(id);
+                String[] cmds = (String[]) commands.getArray();
+                if (commands == null) {
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("noProductFound").replaceAll("%id%", String.valueOf(id))));
                 }
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("productBuySuccess").replaceAll("%productId%", String.valueOf(id)).replaceAll("%product%", MineLAB.getDataSource().getShop().get(id))));
+                MineLAB.getDataSource().updateCredit(player);
+                if (price >= Integer.parseInt(MineLAB.getDataSource().getCredit(player.getUniqueId()))) {
+                    MineLAB.getDataSource().removeCredit(player, price);
+                    for(int i = 0; i < cmds.length; i++) {
+                        String cmd = cmds[i].replaceAll("%player%", player.getName());
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
+                    }
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("productBuySuccess").replaceAll("%productId%", String.valueOf(id)).replaceAll("%product%", MineLAB.getDataSource().getShop().get(id))));
+                }
+            }catch (NullPointerException ex) {
+                ex.printStackTrace();
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("noProductFound").replaceAll("%id%", String.valueOf(id))));
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } else {
             player.sendMessage("/market al (ürün id)");
