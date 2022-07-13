@@ -1,5 +1,7 @@
 package tr.web.minelab.minelab.utils;
 
+import com.hakan.core.utils.query.criteria.order.OrderType;
+import com.hakan.core.utils.query.select.SelectQuery;
 import org.bukkit.entity.Player;
 import tr.web.minelab.minelab.MineLAB;
 
@@ -143,7 +145,7 @@ public class DataSource {
         shop.clear();
         try {
             Statement statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM `categoryProduct` ORDER BY `id` DESC");
+            ResultSet resultSet = statement.executeQuery(new SelectQuery("categoryProduct").fromAll().orderBy(OrderType.DESC, "id").build());
             while(resultSet.next()) {
                 String product = resultSet.getString("name");
                 int serverId = resultSet.getInt("serverID");
@@ -156,13 +158,13 @@ public class DataSource {
             ex.printStackTrace();
         }
     }
-    public Array getProductCommandsById(Integer id) {
+    public String getProductCommandsById(Integer id) {
         if(shop.get(id) == null) return null;
         try {
             Statement statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM `categoryProduct` WHERE `id` = " + id);
+            ResultSet resultSet = statement.executeQuery(new SelectQuery("categoryProduct").fromAll().where("id", id).build());
             if(resultSet.next()) {
-                Array commands = resultSet.getArray("productCommand");
+                String commands = resultSet.getString("productCommand");
                 return commands;
             }
         } catch(SQLException ex) {
@@ -174,7 +176,7 @@ public class DataSource {
         if(shop.get(id) == null) return null;
         try {
             Statement statement = getConnection().createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM `categoryProduct` WHERE `id` = " + id);
+            ResultSet resultSet = statement.executeQuery(new SelectQuery("categoryProduct").fromAll().where("id", id).build());
             if(resultSet.next()) {
                 int price = resultSet.getInt("price");
                 return price;

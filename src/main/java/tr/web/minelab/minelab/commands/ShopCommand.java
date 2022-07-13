@@ -13,6 +13,8 @@ import tr.web.minelab.minelab.MineLAB;
 import java.sql.Array;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @BaseCommand(
         name = "market",
@@ -29,25 +31,30 @@ public class ShopCommand implements HCommandAdapter {
             int id = Integer.parseInt(args[1]);
             try {
                 int price = MineLAB.getDataSource().getProductPriceById(id);
-                Array commands = MineLAB.getDataSource().getProductCommandsById(id);
-                String[] cmds = (String[]) commands.getArray();
+                String commands = MineLAB.getDataSource().getProductCommandsById(id);
+
                 if (commands == null) {
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("noProductFound").replaceAll("%id%", String.valueOf(id))));
+                    return;
                 }
                 MineLAB.getDataSource().updateCredit(player);
-                if (price >= Integer.parseInt(MineLAB.getDataSource().getCredit(player.getUniqueId()))) {
+                if (Integer.parseInt(MineLAB.getDataSource().getCredit(player.getUniqueId())) >= price) {
                     MineLAB.getDataSource().removeCredit(player, price);
-                    for(int i = 0; i < cmds.length; i++) {
-                        String cmd = cmds[i].replaceAll("%player%", player.getName());
+
+                    Matcher matcher = Pattern.compile("(((?<=,\")|(?<=\\[\"))(?<command>.*?)(?=\"))").matcher(commands);
+                    while (matcher.find()) {
+                        System.out.println(matcher.group("command"));
+                        String cmd = matcher.group("command");
+                        cmd = cmd.replaceAll("%player%", player.getName());
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), cmd);
                     }
                     player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("productBuySuccess").replaceAll("%productId%", String.valueOf(id)).replaceAll("%product%", MineLAB.getDataSource().getShop().get(id))));
+                } else {
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("notEnoughCredit")));
                 }
             }catch (NullPointerException ex) {
                 ex.printStackTrace();
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', MineLAB.getLanguage().getString("noProductFound").replaceAll("%id%", String.valueOf(id))));
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         } else {
             player.sendMessage("/market al (ürün id)");

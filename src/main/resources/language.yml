@@ -5,3 +5,4 @@ creditRemoved: '&aBaşarıyla &e%player% &akişisinden &e%amount% &akredi silind
 credits: '&e%player% &akişisinin &e%amount% &akredisi var.'
 noProductFound: '&e%id% &aID üzerinde hiç bir ürün bulunamadı'
 productBuySuccess: '&e%productId% (&e%product%) &aürününü başarıyla aldın.'
+notEnoughCredit: '&cBu ürünü almak için yeterli kredin yok.'
