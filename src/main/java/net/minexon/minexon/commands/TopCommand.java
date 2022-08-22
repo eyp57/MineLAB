@@ -1,14 +1,13 @@
-package tr.web.minelab.minelab.commands;
+package net.minexon.minexon.commands;
 
-import com.hakan.core.command.HCommandAdapter;
 import com.hakan.core.command.executors.base.BaseCommand;
 import com.hakan.core.command.executors.sub.SubCommand;
 import com.hakan.core.ui.inventory.HInventory;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
-import tr.web.minelab.minelab.MineLAB;
-import tr.web.minelab.minelab.guis.TopGui;
+import net.minexon.minexon.MineXON;
+import net.minexon.minexon.guis.TopGui;
 
 @BaseCommand(
         name = "topkredi",
@@ -21,10 +20,10 @@ import tr.web.minelab.minelab.guis.TopGui;
                 "kreditop"
         }
 )
-public class TopCommand implements HCommandAdapter {
+public class TopCommand {
     @SubCommand()
     public void mainCommand(Player player, String[] args) {
-        HInventory inventory = new TopGui("topGui", ChatColor.translateAlternateColorCodes('&', MineLAB.getInstance().getConfig().getString("TopGui.title")), MineLAB.getInstance().getConfig().getInt("TopGui.rows"), InventoryType.CHEST);
+        HInventory inventory = new TopGui("topGui", ChatColor.translateAlternateColorCodes('&', MineXON.getInstance().getConfig().getString("TopGui.title")), MineXON.getInstance().getConfig().getInt("TopGui.rows"), InventoryType.CHEST);
         inventory.open(player);
     }
 }

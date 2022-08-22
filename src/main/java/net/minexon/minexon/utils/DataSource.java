@@ -1,9 +1,9 @@
-package tr.web.minelab.minelab.utils;
+package net.minexon.minexon.utils;
 
 import com.hakan.core.utils.query.criteria.order.OrderType;
 import com.hakan.core.utils.query.select.SelectQuery;
 import org.bukkit.entity.Player;
-import tr.web.minelab.minelab.MineLAB;
+import net.minexon.minexon.MineXON;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -15,10 +15,10 @@ public class DataSource {
     private static Connection connection;
     public DataSource() throws SQLException {
 
-        String username = MineLAB.getInstance().getConfig().getString("Database.username");
-        String host = MineLAB.getInstance().getConfig().getString("Database.host");
-        String password = MineLAB.getInstance().getConfig().getString("Database.password");
-        String database = MineLAB.getInstance().getConfig().getString("Database.database");
+        String username = MineXON.getInstance().getConfig().getString("Database.username");
+        String host = MineXON.getInstance().getConfig().getString("Database.host");
+        String password = MineXON.getInstance().getConfig().getString("Database.password");
+        String database = MineXON.getInstance().getConfig().getString("Database.database");
 
         connection = DriverManager.getConnection("jdbc:mysql://"+host+"/" + database,username,password);
     }
@@ -127,8 +127,8 @@ public class DataSource {
     public void updateTop10() {
         top10.clear();
         int limit = 26;
-        if(MineLAB.getInstance().getConfig().getInt("TopGui.Players") <= 26)
-            limit = MineLAB.getInstance().getConfig().getInt("TopGui.Players");
+        if(MineXON.getInstance().getConfig().getInt("TopGui.Players") <= 26)
+            limit = MineXON.getInstance().getConfig().getInt("TopGui.Players");
         try {
             Statement statement = getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM `accounts` ORDER BY `credit` DESC LIMIT " + limit);
@@ -150,7 +150,7 @@ public class DataSource {
                 String product = resultSet.getString("name");
                 int serverId = resultSet.getInt("serverID");
                 int id = resultSet.getInt("id");
-                if(serverId == MineLAB.getInstance().getConfig().getInt("ServerId")) {
+                if(serverId == MineXON.getInstance().getConfig().getInt("ServerId")) {
                     shop.put(id, product);
                 }
             }

@@ -1,4 +1,4 @@
-package tr.web.minelab.minelab.utils;
+package net.minexon.minexon.utils;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

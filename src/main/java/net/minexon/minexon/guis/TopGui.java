@@ -1,4 +1,4 @@
-package tr.web.minelab.minelab.guis;
+package net.minexon.minexon.guis;
 
 import com.cryptomorin.xseries.XMaterial;
 import com.hakan.core.ui.inventory.HInventory;
@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import tr.web.minelab.minelab.MineLAB;
+import net.minexon.minexon.MineXON;
 
 import javax.annotation.Nonnull;
 import java.util.Map;
@@ -21,15 +21,15 @@ public class TopGui extends HInventory {
     @Override
     protected void onOpen(@Nonnull Player player) {
         int rank = 0;
-        for(Map.Entry<String, Integer> x : MineLAB.getDataSource().getTop10().entrySet()) {
+        for(Map.Entry<String, Integer> x : MineXON.getDataSource().getTop10().entrySet()) {
             rank++;
-            if(rank >= MineLAB.getInstance().getConfig().getInt("TopGui.rows")*9) return;
+            if(rank >= MineXON.getInstance().getConfig().getInt("TopGui.rows")*9) return;
             ItemStack itemSkull = XMaterial.PLAYER_HEAD.parseItem();
             SkullMeta skullMeta = (SkullMeta) itemSkull.getItemMeta();
             skullMeta.setOwner(x.getKey());
             int finalRank = rank;
             skullMeta.setLore(
-                    MineLAB.getInstance().getConfig().getStringList("TopGui.item.lore")
+                    MineXON.getInstance().getConfig().getStringList("TopGui.item.lore")
                             .stream()
                             .map(line -> ChatColor.translateAlternateColorCodes('&', line
                                     .replaceAll("%player%", x.getKey())

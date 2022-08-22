@@ -1,7 +1,13 @@
-package tr.web.minelab.minelab;
+package net.minexon.minexon;
 
 import com.hakan.core.HCore;
 import com.hakan.core.utils.yaml.HYaml;
+import net.minexon.minexon.commands.KrediCommand;
+import net.minexon.minexon.commands.ShopCommand;
+import net.minexon.minexon.commands.TopCommand;
+import net.minexon.minexon.hooks.PlaceholderAPI;
+import net.minexon.minexon.utils.DataSource;
+import net.minexon.minexon.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -9,33 +15,25 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import tr.web.minelab.minelab.commands.KrediCommand;
-import tr.web.minelab.minelab.commands.ShopCommand;
-import tr.web.minelab.minelab.commands.TopCommand;
-import tr.web.minelab.minelab.hooks.PlaceholderAPI;
-import tr.web.minelab.minelab.utils.DataSource;
-import tr.web.minelab.minelab.utils.Metrics;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class MineLAB extends JavaPlugin implements Listener {
-
-    private static MineLAB instance;
+public final class MineXON extends JavaPlugin implements Listener {
+    private static MineXON instance;
     private static Connection connection;
     private static DataSource dataSource;
     private static HYaml language;
     @Override
     public void onEnable() {
         // Plugin startup logic
+        HCore.initialize(this);
         System.out.println(ChatColor.translateAlternateColorCodes('&', "&eEklenti aktifleştiriliyor..."));
         String javaVersion = System.getProperty("java.version");
         System.out.println(ChatColor.translateAlternateColorCodes('&', "&bKullanılan Java Sürümü: " + javaVersion));
-        int metricsId = 14696;
-        Metrics metrics = new Metrics(this, metricsId);
+        Metrics metrics = new Metrics(this, 14696);
         metrics.addCustomChart(new Metrics.DrilldownPie("javaVersion", () -> {
             Map<String, Map<String, Integer>> map = new HashMap<>();
             Map<String, Integer> entry = new HashMap<>();
@@ -76,7 +74,7 @@ public final class MineLAB extends JavaPlugin implements Listener {
         registerCommands();
         getServer().getPluginManager().registerEvents(this, this);
         HCore.asyncScheduler().every(5*1200L).run(() -> {
-            getLogger().info("Tüm MineLAB dataları yenilendi.");
+            getLogger().info("All MineXON data reloaded.");
             dataSource.updateLastSupporterCredit();
             dataSource.updateLastSupporter();
             dataSource.updateTop10();
@@ -101,7 +99,7 @@ public final class MineLAB extends JavaPlugin implements Listener {
         HCore.registerCommands(new ShopCommand());
     }
 
-    public static MineLAB getInstance() {
+    public static MineXON getInstance() {
         return instance;
     }
 
