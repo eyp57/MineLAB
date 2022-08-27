@@ -1,0 +1,50 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+group = 'net.minexon'
+version = '1.0.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi' }
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:23.0.0'
+    compileOnly 'org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.2'
+    compileOnly 'com.github.hakan-krgn.hCore:bukkit:0.5.9'
+
+    implementation group: 'com.github.cryptomorin', name: 'XSeries', version: '9.0.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+}
+
+shadowJar {
+    dependencies {
+        include dependency("com.github.cryptomorin:XSeries:9.0.0")
+    }
+    relocate("com.github.cryptomorin", "shaded.com.github.cryptomorin")
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

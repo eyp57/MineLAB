@@ -8,31 +8,40 @@ import net.minexon.minexon.MineXON;
 
 public class PlaceholderAPI extends PlaceholderExpansion {
 
+    private final MineXON plugin;
+
+    public PlaceholderAPI(MineXON plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
-    public @NotNull String getIdentifier() {
+    @NotNull
+    public String getIdentifier() {
         return "minelab";
     }
 
     @Override
-    public @NotNull String getAuthor() {
+    @NotNull
+    public String getAuthor() {
         return "zRooter";
     }
 
     @Override
-    public @NotNull String getVersion() {
+    @NotNull
+    public String getVersion() {
         return "1.0";
     }
 
     @Override
-    public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
-        if(params.equals("kredi")) {
-            return player == null ? "0" : MineXON.getDataSource().getCredit(player.getUniqueId());
+    public String onRequest(@Nullable OfflinePlayer player, @NotNull String params) {
+        if (params.equals("kredi")) {
+            return player == null ? "0" : String.valueOf(plugin.getDatabase().getCredits(player.getName()));
         }
-        if(params.equals("son_bagisci")) {
-            return MineXON.getDataSource().getLastSupporter();
+        else if (params.equals("son_bagisci")) {
+            return plugin.getDatabase().getLastSupporter();
         }
-        if(params.equals("son_bagisci_kredi")) {
-            return MineXON.getDataSource().getLastSupporterCredit();
+        else if (params.equals("son_bagisci_kredi")) {
+            return plugin.getDatabase().getLastSupporterCredit();
         }
         return null;
     }

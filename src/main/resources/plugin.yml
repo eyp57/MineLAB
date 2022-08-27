@@ -1,5 +1,5 @@
 name: MineXON
-version: '${project.version}'
+version: '${version}'
 main: net.minexon.minexon.MineXON
 api-version: 1.13
 depend: [ hCore ]
